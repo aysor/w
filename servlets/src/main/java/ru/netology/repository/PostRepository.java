@@ -3,12 +3,12 @@ package ru.netology.repository;
 import ru.netology.model.Post;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 
 public class PostRepository {
-    //List<Post> posts = new ArrayList<>();
-    Map<Long, Post> posts = new HashMap<>();
+    ConcurrentHashMap<Long, Post> posts = new ConcurrentHashMap <>();
     AtomicLong lastId = new AtomicLong();
 
     public List<Post> all() {
@@ -20,7 +20,6 @@ public class PostRepository {
     }
 
     public Optional<Post> getById(long id) {
-        //return posts.stream().filter(p -> p.getId() == id).findAny();
         return Optional.ofNullable(posts.get(id));
     }
 

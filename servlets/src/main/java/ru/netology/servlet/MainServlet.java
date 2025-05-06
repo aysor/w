@@ -12,6 +12,15 @@ import java.io.IOException;
 public class MainServlet extends HttpServlet {
     private PostController controller;
 
+    private static final String M_GET = "GET";
+    private static final String M_POST = "POST";
+    private static final String M_DELETE = "DELETE";
+
+    private static final String POSTS = "/api/posts";
+    private static final String POSTS_WITH_ID = "/api/posts/\\d+";
+
+    private static final String DELIMITER = "/";
+
     @Override
     public void init() {
         final var repository = new PostRepository();
@@ -27,21 +36,21 @@ public class MainServlet extends HttpServlet {
             final var path = req.getRequestURI();
             final var method = req.getMethod();
             // primitive routing
-            if (method.equals("GET") && path.equals("/api/posts")) {
+            if (method.equals(M_GET) && path.equals(POSTS)) {
                 controller.all(resp);
                 return;
             }
-            if (method.equals("GET") && path.matches("/api/posts/\\d+")) {
+            if (method.equals(M_GET) && path.matches(POSTS_WITH_ID)) {
                 // easy way
                 final var id = getIdByPath(path);
                 controller.getById(id, resp);
                 return;
             }
-            if (method.equals("POST") && path.equals("/api/posts")) {
+            if (method.equals(M_POST) && path.equals(POSTS)) {
                 controller.save(req.getReader(), resp);
                 return;
             }
-            if (method.equals("DELETE") && path.matches("/api/posts/\\d+")) {
+            if (method.equals(M_DELETE) && path.matches(POSTS_WITH_ID)) {
                 // easy way
                 final var id = getIdByPath(path);
                 controller.removeById(id, resp);
@@ -55,7 +64,7 @@ public class MainServlet extends HttpServlet {
     }
 
     private Long getIdByPath(String path) {
-        return Long.parseLong(path.substring(path.lastIndexOf("/") + 1));
+        return Long.parseLong(path.substring(path.lastIndexOf(DELIMITER) + 1));
     }
 }
 
