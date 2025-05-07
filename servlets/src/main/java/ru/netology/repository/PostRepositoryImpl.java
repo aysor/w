@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
-public class PostRepository {
+public class PostRepositoryImpl implements IPostRepository {
     ConcurrentHashMap<Long, Post> posts = new ConcurrentHashMap<>();
     AtomicLong lastId = new AtomicLong();
 
